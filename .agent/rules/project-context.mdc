@@ -1,0 +1,20 @@
+# Project Environment: Windows
+Operating System: Windows 11 / Windows 10
+
+Pathing Strategy: Always use Windows-style URIs for local assets (e.g., file:///C:/Users/...).
+
+Shell: [Specify if you use PowerShell, CMD, or Git Bash]
+
+# Project: Puddlefoot the Penguin
+Core Character: Puddlefoot (Whimsical/Rustic style).
+
+Role: Gardening companion for an app/website.
+
+Asset Management: When generating code or referencing images, look in the assets/ folder relative to the Windows root.
+
+# Technical Rules
+Avoid using / for root-level paths if the script requires a drive letter (e.g., C:).
+
+Use \ for local shell commands but // or / for internal code references depending on the language (Python/Node).
+
+Gemini Model: gemini-3-flash-preview

@@ -2,26 +2,17 @@ import Link from 'next/link';
 
 export default function Navigation() {
     return (
-        <nav className="glass container" style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            margin: '1.5rem auto',
-            padding: '0.75rem 1.5rem',
-            position: 'sticky',
-            top: '1rem',
-            zIndex: 100
-        }}>
-            <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', color: 'inherit' }}>
-                <span style={{ fontSize: '1.5rem' }}>🐧</span>
-                <span style={{ fontWeight: 700, fontSize: '1.25rem', fontFamily: 'var(--font-heading)' }}>Puddlefoot</span>
+        <nav className="glass container mx-auto my-6 px-6 py-3 sticky top-4 z-50 flex flex-col md:flex-row justify-between items-center gap-4">
+            <Link href="/" className="flex items-center gap-2.5 text-inherit no-underline">
+                <span className="text-2xl">🐧</span>
+                <span className="font-bold text-xl font-heading">Puddlefoot</span>
             </Link>
 
-            <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-                <Link href="/dashboard" style={{ fontWeight: 500, opacity: 0.8 }}>Dashboard</Link>
-                <Link href="/plants" style={{ fontWeight: 500, opacity: 0.8 }}>My Plants</Link>
-                <Link href="/assistant" style={{ fontWeight: 500, opacity: 0.8 }}>Assistant</Link>
-                <button className="button-primary" style={{ padding: '8px 20px', borderRadius: 'var(--radius-md)' }}>
+            <div className="flex flex-col md:flex-row gap-4 md:gap-8 items-center w-full md:w-auto">
+                <Link href="/dashboard" className="font-medium opacity-80 hover:opacity-100 transition-opacity">Dashboard</Link>
+                <Link href="/plants" className="font-medium opacity-80 hover:opacity-100 transition-opacity">My Plants</Link>
+                <Link href="/assistant" className="font-medium opacity-80 hover:opacity-100 transition-opacity">Assistant</Link>
+                <button className="button-primary px-5 py-2 rounded-md w-full md:w-auto">
                     Sign In
                 </button>
             </div>
