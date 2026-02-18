@@ -50,7 +50,7 @@ export async function POST(request: Request) {
                 ...chatHistory
             ],
             generationConfig: {
-                maxOutputTokens: 500,
+                maxOutputTokens: 1000,
             },
         });
 

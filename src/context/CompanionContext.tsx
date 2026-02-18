@@ -27,6 +27,7 @@ interface CompanionContextType {
     messages: Message[];
     isLoading: boolean;
     sendMessage: (content: string) => Promise<void>;
+    addMessage: (message: Message) => void;
 }
 
 const CompanionContext = createContext<CompanionContextType | undefined>(undefined);
@@ -116,6 +117,10 @@ export function CompanionProvider({ children }: { children: ReactNode }) {
         }
     };
 
+    const addMessage = (message: Message) => {
+        setMessages(prev => [...prev, message]);
+    };
+
     useEffect(() => {
         // Reset to IDLE on mount
         setUiMode('IDLE');
@@ -159,7 +164,7 @@ export function CompanionProvider({ children }: { children: ReactNode }) {
             userId,
             isKeyboardOpen, setIsKeyboardOpen,
             isUploadOpen, setIsUploadOpen,
-            messages, isLoading, sendMessage
+            messages, isLoading, sendMessage, addMessage
         }}>
             {children}
         </CompanionContext.Provider>

@@ -4,24 +4,23 @@ import React, { useState, useRef } from 'react';
 import { useCompanion } from '@/context/CompanionContext';
 import { Send, Image as ImageIcon, X, Paperclip } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { supabase } from '@/lib/supabase';
 import { uploadPlantImage } from '@/lib/storage';
 import { compressImage } from '@/lib/compression';
 import { Toast, ToastType } from '@/components/ui/Toast';
 
-// Helper to use existing chat logic or reimplement for companion
-// I will reimplement a simplified version tailored for this UI
 export default function ChatInterface() {
     const {
         uiMode, setUiMode,
         tier,
         isProcessing, setIsProcessing,
         isKeyboardOpen,
-        isUploadOpen, setIsUploadOpen
+        isUploadOpen, setIsUploadOpen,
+        sendMessage: sendContextMessage,
+        addMessage,
+        isLoading
     } = useCompanion();
 
     const [input, setInput] = useState('');
-    const [messages, setMessages] = useState<{ role: 'user' | 'assistant', content: string }[]>([]);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [toast, setToast] = useState<{ message: string; type: ToastType } | null>(null);
 
@@ -44,6 +43,9 @@ export default function ChatInterface() {
             setUiMode('SPEAKING');
             setIsProcessing(true);
 
+            // Add local feedback message
+            addMessage({ role: 'assistant', content: "Optimizing your image..." });
+
             try {
                 const compressedImage = await compressImage(file);
                 showToast("Uploading...", "info");
@@ -51,17 +53,15 @@ export default function ChatInterface() {
                 console.log('Image uploaded successfully:', imageUrl);
                 showToast("Image Uploaded!", "success");
 
-                // Simulate AI response
-                setTimeout(() => {
-                    setMessages(prev => [...prev, { role: 'assistant', content: "I see your plant! Analyzing..." }]);
-                    setIsProcessing(false);
-                    setIsUploadOpen(false); // Close upload state
-                }, 2000);
+                addMessage({ role: 'assistant', content: "I see your plant! Analyzing..." });
+                setIsProcessing(false);
+                setIsUploadOpen(false); // Close upload state
 
             } catch (error) {
                 console.error(error);
                 setIsProcessing(false);
                 showToast("Upload failed.", "error");
+                addMessage({ role: 'assistant', content: "I couldn't upload that image. Please try again." });
                 setIsUploadOpen(false);
             }
         } else {
@@ -71,39 +71,17 @@ export default function ChatInterface() {
     };
 
     const sendMessage = async () => {
-        if (!input.trim() || isProcessing) return;
+        if (!input.trim() || isProcessing || isLoading) return;
 
-        const userMsg = { role: 'user' as const, content: input };
-        setMessages(prev => [...prev, userMsg]);
+        const content = input;
         setInput('');
-        setIsProcessing(true);
         setUiMode('SPEAKING'); // Trigger avatar animation
 
-        // Simulate AI response
-        setTimeout(() => {
-            setMessages(prev => [...prev, { role: 'assistant', content: "That's a great question about your garden." }]);
-            setIsProcessing(false);
-        }, 2000);
+        await sendContextMessage(content);
     };
 
     return (
         <>
-            {/* Messages Area - Always visible if there are messages, or specific mode? */}
-            {/* Let's make messages fade in/out or stay persistent in background */}
-            <div className="fixed inset-0 pointer-events-none z-30 flex flex-col justify-end pb-32 px-4">
-                <div className="flex-1 overflow-y-auto space-y-4 max-h-[50vh] mask-image-gradient" style={{ scrollbarWidth: 'none' }}>
-                    {messages.map((m, i) => (
-                        <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                            <div className={`pointer-events-auto max-w-[85%] p-3 rounded-2xl shadow-sm ${m.role === 'user'
-                                ? 'bg-nature-green text-white rounded-br-none'
-                                : 'bg-white/90 backdrop-blur-sm text-foreground rounded-bl-none border border-white/40'}`}>
-                                {m.content}
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-
             {/* Input Overlay - Only visible when isKeyboardOpen is true */}
             <AnimatePresence>
                 {isKeyboardOpen && (
@@ -124,7 +102,7 @@ export default function ChatInterface() {
                             />
                             <button
                                 onClick={sendMessage}
-                                disabled={!input.trim() || isProcessing}
+                                disabled={!input.trim() || isProcessing || isLoading}
                                 className={`p-2 rounded-full transition-all ${(!input.trim()) ? 'bg-gray-200 text-gray-400' : 'bg-nature-green text-white shadow-md hover:scale-105'}`}
                             >
                                 <Send size={20} />
