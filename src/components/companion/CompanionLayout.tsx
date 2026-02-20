@@ -7,6 +7,7 @@ import HUDControlBar from './HUDControlBar';
 import ChatHistory from './ChatHistory';
 import HamburgerMenu from './HamburgerMenu';
 import ChatInputOverlay from './ChatInputOverlay';
+import CameraView from './CameraView';
 
 // Safe zone margin style
 const SAFE_ZONE_STYLE = {
@@ -18,10 +19,13 @@ const SAFE_ZONE_STYLE = {
 
 // Inner component to access context
 function CompanionLayoutInner({ children }: { children: ReactNode }) {
-    const { uiMode } = useCompanion();
+    const { uiMode, isCameraActive } = useCompanion();
 
     return (
         <div className="fixed inset-0 w-screen h-screen overflow-hidden bg-[#F2ECE7]">
+            {/* Camera View - Direct Child of Root */}
+            {isCameraActive && <CameraView />}
+
             {/* Background / Main Content Area */}
             {/* This layer sits at the very back */}
             <main className="absolute inset-0 z-0 overflow-y-auto">

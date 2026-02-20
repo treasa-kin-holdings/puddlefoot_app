@@ -8,10 +8,10 @@ import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 export default function PuddlefootAvatar() {
-    const { uiMode, isKeyboardOpen, isProcessing } = useCompanion();
+    const { uiMode, isKeyboardOpen, isProcessing, isCameraActive } = useCompanion();
 
     // Determine if we should be in "Mini" mode (Top-Right)
-    const isMini = uiMode === 'CHATTING' || uiMode === 'CAMERA' || isKeyboardOpen;
+    const isMini = uiMode === 'CHATTING' || isCameraActive || isKeyboardOpen;
     const isSpeaking = uiMode === 'SPEAKING' || isProcessing;
 
     return (

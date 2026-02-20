@@ -26,7 +26,7 @@ const safetySettings = [
     },
 ];
 
-export const getGeminiModel = (modelName: string = "gemini-3-flash-preview") => {
+export const getGeminiModel = (modelName: string = "gemini-2.5-flash-lite") => {
     return genAI.getGenerativeModel({
         model: modelName,
         safetySettings

@@ -5,7 +5,7 @@ import { useCompanion } from '@/context/CompanionContext';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function ChatInputOverlay() {
-    const { isKeyboardOpen, sendMessage, isLoading } = useCompanion();
+    const { isKeyboardOpen, sendMessage, isLoading, selectedImage, setSelectedImage } = useCompanion();
     const [inputText, setInputText] = useState('');
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -60,6 +60,28 @@ export default function ChatInputOverlay() {
                                 className="flex-1 bg-transparent border-none focus:outline-none text-lg text-[#333333] placeholder:text-[#8C8174]/70 font-serif"
                                 disabled={isLoading}
                             />
+
+                            {/* Image Preview */}
+                            {selectedImage && (
+                                <div
+                                    className="relative rounded-lg overflow-hidden border border-[#8F9779] flex-shrink-0"
+                                    style={{ width: '40px', height: '40px' }}
+                                >
+                                    <img
+                                        src={selectedImage}
+                                        alt="Selected"
+                                        className="w-full h-full"
+                                        style={{ objectFit: 'cover' }}
+                                    />
+                                    <button
+                                        onClick={() => setSelectedImage(null)}
+                                        className="absolute top-0 right-0 bg-black/50 text-white p-0.5 rounded-bl"
+                                    >
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                    </button>
+                                </div>
+                            )}
+
                             <button
                                 onClick={handleSend}
                                 disabled={isLoading || !inputText.trim()}

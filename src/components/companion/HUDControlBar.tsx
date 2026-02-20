@@ -13,7 +13,10 @@ export default function ControlBar() {
         tier,
         isKeyboardOpen, setIsKeyboardOpen,
         isUploadOpen, setIsUploadOpen,
-        sendMessage, isLoading
+        isCameraActive, setIsCameraActive,
+        setSelectedImage,
+        sendMessage, isLoading,
+        isListening // Add listening state
     } = useCompanion();
 
     const [inputText, setInputText] = React.useState('');
@@ -116,7 +119,18 @@ export default function ControlBar() {
                 style={{ display: 'none' }}
                 accept="image/*"
                 onChange={(e) => {
-                    // Handle file
+                    const file = e.target.files?.[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onloadend = () => {
+                            const base64String = reader.result as string;
+                            setSelectedImage(base64String);
+                            // Open keyboard to allow typing a message with the image
+                            setIsKeyboardOpen(true);
+                            setUiMode('CHATTING');
+                        };
+                        reader.readAsDataURL(file);
+                    }
                 }}
             />
 
@@ -137,9 +151,25 @@ export default function ControlBar() {
                 >
                     {/* Voice Mode */}
                     <motion.button
+                        initial={{ opacity: 1, scale: 1 }}
                         onClick={() => setUiMode(uiMode === 'SPEAKING' ? 'IDLE' : 'SPEAKING')}
                         whileHover={{ scale: 1.1, rotate: -3 }}
                         whileTap={{ scale: 0.9 }}
+                        animate={isListening ? {
+                            scale: [1, 1.1, 1],
+                            boxShadow: [
+                                "0 0 0 0 rgba(245, 245, 220, 0.4)",
+                                "0 0 0 10px rgba(245, 245, 220, 0)",
+                                "0 0 0 0 rgba(245, 245, 220, 0)"
+                            ],
+                            transition: {
+                                duration: 1.5,
+                                repeat: Infinity,
+                                ease: "easeInOut"
+                            }
+                        } : {
+                            y: 0, opacity: 1 // Default state from parent trigger, but here safe to just let it be or reset
+                        }}
                         style={uiMode === 'SPEAKING' ? activeButtonStyle : buttonStyle}
                         aria-label="Voice Mode"
                     >
@@ -148,10 +178,11 @@ export default function ControlBar() {
 
                     {/* Camera Mode */}
                     <motion.button
-                        onClick={() => handleTierAction(() => setUiMode(uiMode === 'CAMERA' ? 'IDLE' : 'CAMERA'))}
+                        initial={{ opacity: 1, scale: 1 }}
+                        onClick={() => handleTierAction(() => setIsCameraActive(!isCameraActive))}
                         whileHover={{ scale: 1.1, rotate: 3 }}
                         whileTap={{ scale: 0.9 }}
-                        style={uiMode === 'CAMERA' ? activeButtonStyle : buttonStyle}
+                        style={isCameraActive ? activeButtonStyle : buttonStyle}
                         aria-label="Camera Mode"
                     >
                         <HandDrawnCamera />
@@ -159,6 +190,7 @@ export default function ControlBar() {
 
                     {/* Keyboard Mode */}
                     <motion.button
+                        initial={{ opacity: 1, scale: 1 }}
                         onClick={() => {
                             const newState = !isKeyboardOpen;
                             setIsKeyboardOpen(newState);
@@ -174,6 +206,7 @@ export default function ControlBar() {
 
                     {/* Upload Mode */}
                     <motion.button
+                        initial={{ opacity: 1, scale: 1 }}
                         onClick={() => handleTierAction(() => setIsUploadOpen(true))}
                         whileHover={{ scale: 1.1, rotate: 2 }}
                         whileTap={{ scale: 0.9 }}
