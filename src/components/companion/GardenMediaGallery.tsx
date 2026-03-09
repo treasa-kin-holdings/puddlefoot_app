@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { listGardenMedia, signGardenMediaUrl, deleteGardenMediaRow, GardenMediaRow } from '@/lib/gardenMedia';
 import { useCompanion } from '@/context/CompanionContext'; // adjust import to your actual hook
+import { BRAND } from '@/lib/brand';
 
 type Item = GardenMediaRow & { signedUrl?: string };
 
@@ -71,7 +72,7 @@ export default function GardenMediaGallery() {
 
             {items.length === 0 && !loading ? (
                 <div className="text-sm opacity-70">
-                    Nothing saved yet. When Bramble generates an overlay/prediction, tap <b>Save to Gallery</b>.
+                    Nothing saved yet. When {BRAND.assistantName} generates an overlay/prediction, tap <b>Save to Gallery</b>.
                 </div>
             ) : (
                 <div className="grid grid-cols-3 gap-2">

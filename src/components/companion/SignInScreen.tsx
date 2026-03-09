@@ -2,6 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { useCompanion } from '@/context/CompanionContext';
+import { BRAND } from '@/lib/brand';
 
 const isValidEmail = (s: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s.trim());
 
@@ -48,7 +49,7 @@ export default function SignInScreen() {
 
     if (safeAuthStatus === 'loading') {
         return (
-            <div className="fixed inset-0 bg-[#F2ECE7]/95 backdrop-blur-[1px]">
+            <div className="fixed inset-0 bg-[#F2E8D9]/95 backdrop-blur-[1px]">
                 <div className="flex flex-col h-full w-[90%] max-w-3xl mx-auto p-4 relative z-20">
                     <div className="h-32 flex-shrink-0" />
                     <div className="w-full max-w-md mx-auto pointer-events-auto">
@@ -57,7 +58,7 @@ export default function SignInScreen() {
                             style={{ padding: '10px 16px' }}
                         >
                             <div className="text-neutral-800 leading-relaxed font-serif">
-                                Hi! I’m Bramble.
+                                Hi! I’m {BRAND.assistantName}.
                                 <br />
                                 One sec — checking your sign-in…
                             </div>
@@ -71,7 +72,7 @@ export default function SignInScreen() {
     if (safeAuthStatus === 'signed_in' && userId) return null;
 
     return (
-        <div className="fixed inset-0 bg-[#F2ECE7]/95 backdrop-blur-[1px]">
+        <div className="fixed inset-0 bg-[#F2E8D9]/95 backdrop-blur-[1px]">
             {/* Same layout constraints as ChatHistory so it never feels full-screen */}
             <div className="flex flex-col h-full w-[90%] max-w-3xl mx-auto p-4 relative z-20">
                 {/* top safe space so it appears where chat bubbles normally live */}

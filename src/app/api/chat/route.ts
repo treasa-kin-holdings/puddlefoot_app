@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { checkChatLimit, logUsage } from '@/lib/limits';
+import { BRAND } from '@/lib/brand';
 
 const getUserId = (request: Request) => {
     return request.headers.get('x-user-id') || '00000000-0000-0000-0000-000000000000';
@@ -60,7 +61,7 @@ export async function POST(request: Request) {
         const chat = model.startChat({
             history: [
                 { role: 'user', parts: [{ text: `System Instruction: ${BRAMBLE_SYSTEM_PROMPT}` }] },
-                { role: 'model', parts: [{ text: 'Understood. I am Bramble, ready to assist.' }] },
+                { role: 'model', parts: [{ text: `Understood. I am ${BRAND.assistantName}, ready to assist.` }] },
                 ...chatHistory,
             ],
             generationConfig: { maxOutputTokens: 2000 },
@@ -91,7 +92,7 @@ export async function POST(request: Request) {
         // Rate limit detection
         if (error?.message?.includes('429') || error?.status === 429) {
             return NextResponse.json(
-                { error: 'Bramble is tired (Rate Limit Reached). Please wait a minute and try again.' },
+                { error: `${BRAND.assistantName} is tired (Rate Limit Reached). Please wait a minute and try again.` },
                 { status: 429 }
             );
         }

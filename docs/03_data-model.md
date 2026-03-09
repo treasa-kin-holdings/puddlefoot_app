@@ -1,16 +1,16 @@
-# Puddlefoot Data Model (03_data-model.md)
+# TerraVanta Data Model (03_data-model.md)
 
-This document defines the core entities and relationships for the Puddlefoot gardening companion.
+This document defines the core entities and relationships for the TerraVanta gardening companion.
 
 ## 1. Entities & Schema
 
 ### `profiles` (User Profiles)
-Stores user-specific settings and Puddlefoot interaction preferences.
+Stores user-specific settings and TerraVanta interaction preferences.
 - `id`: uuid (PK, references auth.users)
 - `display_name`: string
 - `avatar_url`: string
 - `location`: point (Lat/Long for weather context)
-- `persona_affinity`: float (User's preference for Puddlefoot's meticulousness level)
+- `persona_affinity`: float (User's preference for Bramble's meticulousness level)
 - `created_at`: timestamp
 
 ### `plants` (User's Garden)
@@ -30,7 +30,7 @@ Audit trail of all gardening actions.
 - `id`: uuid (PK)
 - `plant_id`: uuid (FK -> plants.id)
 - `action_type`: enum (WATER, FERTILIZE, PRUNE, REPOT, PHOTO)
-- `note`: text (Optional user note or Puddlefoot observation)
+- `note`: text (Optional user note or Bramble observation)
 - `image_url`: string (Optional photo associated with log)
 - `created_at`: timestamp
 

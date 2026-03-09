@@ -1,6 +1,6 @@
-# Puddlefoot API Contracts (04_api-contracts.md)
+# TerraVanta API Contracts (04_api-contracts.md)
 
-This document specifies the RESTful API endpoints for the Puddlefoot system.
+This document specifies the RESTful API endpoints for the TerraVanta system.
 
 ## 1. Authentication
 - **Mechanism**: NextAuth.js (JWT or Sessions)
@@ -42,7 +42,7 @@ AI-driven plant identification via image.
   {
     "suggested_species": "Monstera Deliciosa",
     "confidence": 0.98,
-    "puddlefoot_intro": "Indeed, this appears to be a most healthy Monstera!"
+    "terravanta_intro": "Indeed, this appears to be a most healthy Monstera!"
   }
   ```
 
@@ -54,7 +54,7 @@ AI diagnosis for a specific plant health issue.
   {
     "diagnosis": "Overwatering",
     "remedy": "Allow the top 2 inches of soil to dry out...",
-    "puddlefoot_note": "I suggest a bit more restraint with the watering can, my friend."
+    "terravanta_note": "I suggest a bit more restraint with the watering can, my friend."
   }
   ```
 

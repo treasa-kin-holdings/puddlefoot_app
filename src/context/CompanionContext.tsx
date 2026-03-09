@@ -4,6 +4,7 @@ import React, { createContext, useContext, useState, ReactNode, useEffect, useRe
 import { supabase } from '@/lib/supabase';
 import { getUserTier } from '@/lib/limits';
 import { saveGardenMedia, base64ToBlob } from '@/lib/gardenMedia';
+import { BRAND } from '@/lib/brand';
 
 export type UiMode = 'IDLE' | 'SPEAKING' | 'CHATTING' | 'CAMERA' | 'AUTH';
 
@@ -102,6 +103,13 @@ const CompanionContext = createContext<CompanionContextType | undefined>(undefin
 const isValidEmail = (s: string) => {
     const t = s.trim();
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(t);
+};
+
+const say = (message: string) => {
+    return message
+        .replaceAll('{assistant}', BRAND.assistantName)
+        .replaceAll('{app}', BRAND.appName)
+        .replaceAll('{species}', BRAND.assistantSpecies);
 };
 
 export function CompanionProvider({ children }: { children: ReactNode }) {
@@ -284,11 +292,7 @@ export function CompanionProvider({ children }: { children: ReactNode }) {
         }
 
         // English
-        if (
-            t === 'en' ||
-            t.includes('english') ||
-            t.includes('anglais')
-        ) {
+        if (t === 'en' || t.includes('english') || t.includes('anglais')) {
             return {
                 label: 'English',
                 code: 'en',
@@ -316,12 +320,7 @@ export function CompanionProvider({ children }: { children: ReactNode }) {
         }
 
         // Spanish
-        if (
-            t === 'es' ||
-            t.includes('spanish') ||
-            t.includes('español') ||
-            t.includes('espanol')
-        ) {
+        if (t === 'es' || t.includes('spanish') || t.includes('español') || t.includes('espanol')) {
             return {
                 label: 'Spanish',
                 code: 'es',
@@ -331,11 +330,7 @@ export function CompanionProvider({ children }: { children: ReactNode }) {
         }
 
         // German
-        if (
-            t === 'de' ||
-            t.includes('german') ||
-            t.includes('deutsch')
-        ) {
+        if (t === 'de' || t.includes('german') || t.includes('deutsch')) {
             return {
                 label: 'German',
                 code: 'de',
@@ -345,11 +340,7 @@ export function CompanionProvider({ children }: { children: ReactNode }) {
         }
 
         // Italian
-        if (
-            t === 'it' ||
-            t.includes('italian') ||
-            t.includes('italiano')
-        ) {
+        if (t === 'it' || t.includes('italian') || t.includes('italiano')) {
             return {
                 label: 'Italian',
                 code: 'it',
@@ -374,11 +365,7 @@ export function CompanionProvider({ children }: { children: ReactNode }) {
         }
 
         // Japanese
-        if (
-            t === 'ja' ||
-            t.includes('japanese') ||
-            t.includes('日本語')
-        ) {
+        if (t === 'ja' || t.includes('japanese') || t.includes('日本語')) {
             return {
                 label: 'Japanese',
                 code: 'ja',
@@ -406,11 +393,7 @@ export function CompanionProvider({ children }: { children: ReactNode }) {
         }
 
         // Dutch
-        if (
-            t === 'nl' ||
-            t.includes('dutch') ||
-            t.includes('nederlands')
-        ) {
+        if (t === 'nl' || t.includes('dutch') || t.includes('nederlands')) {
             return {
                 label: 'Dutch',
                 code: 'nl',
@@ -420,11 +403,7 @@ export function CompanionProvider({ children }: { children: ReactNode }) {
         }
 
         // Korean
-        if (
-            t === 'ko' ||
-            t.includes('korean') ||
-            t.includes('한국어')
-        ) {
+        if (t === 'ko' || t.includes('korean') || t.includes('한국어')) {
             return {
                 label: 'Korean',
                 code: 'ko',
@@ -434,11 +413,7 @@ export function CompanionProvider({ children }: { children: ReactNode }) {
         }
 
         // Arabic
-        if (
-            t === 'ar' ||
-            t.includes('arabic') ||
-            t.includes('العربية')
-        ) {
+        if (t === 'ar' || t.includes('arabic') || t.includes('العربية')) {
             return {
                 label: 'Arabic',
                 code: 'ar',
@@ -448,11 +423,7 @@ export function CompanionProvider({ children }: { children: ReactNode }) {
         }
 
         // Russian
-        if (
-            t === 'ru' ||
-            t.includes('russian') ||
-            t.includes('русский')
-        ) {
+        if (t === 'ru' || t.includes('russian') || t.includes('русский')) {
             return {
                 label: 'Russian',
                 code: 'ru',
@@ -462,12 +433,7 @@ export function CompanionProvider({ children }: { children: ReactNode }) {
         }
 
         // Hindi
-        if (
-            t === 'hi' ||
-            t.includes('hindi') ||
-            t.includes('हिन्दी') ||
-            t.includes('हिंदी')
-        ) {
+        if (t === 'hi' || t.includes('hindi') || t.includes('हिन्दी') || t.includes('हिंदी')) {
             return {
                 label: 'Hindi',
                 code: 'hi',
@@ -512,7 +478,13 @@ export function CompanionProvider({ children }: { children: ReactNode }) {
         setOnboardingStatus('incomplete');
 
         respondLocal(
-            "👋 Hello! I’m Bramble.\n\nBefore we start, I just need a few details so I can personalize your gardening help.\n\nWhat would you like me to call you?"
+            say(`👋 Hello! Welcome to {app}.
+
+I’m {assistant}, your gardening companion.
+
+Before we start, I just need a few details so I can personalize your gardening help.
+
+What would you like me to call you?`)
         );
     };
 
@@ -553,13 +525,23 @@ export function CompanionProvider({ children }: { children: ReactNode }) {
 
         if (normalized.confidence === 'low') {
             respondLocal(
-                `Wonderful — nice to meet you, **${payload.preferred_name}**.\n\nI’ll remember that your garden is in **${payload.garden_city}, ${payload.garden_country}**, and your preferred language is **${payload.language}**.\n\nSome voice features may work best once I’m fully configured for that language.\n\nHow can I help in the garden today?`
+                say(`Wonderful — nice to meet you, **${payload.preferred_name}**.
+
+I’m {assistant}, and I’ll remember that your garden is in **${payload.garden_city}, ${payload.garden_country}**, and your preferred language is **${payload.language}**.
+
+Some voice features may work best once I’m fully configured for that language.
+
+How can I help in the garden today?`)
             );
             return;
         }
 
         respondLocal(
-            `Wonderful — nice to meet you, **${payload.preferred_name}**.\n\nI’ll remember that your garden is in **${payload.garden_city}, ${payload.garden_country}**, and I’ll speak with you in **${payload.language}**.\n\nHow can I help in the garden today?`
+            say(`Wonderful — nice to meet you, **${payload.preferred_name}**.
+
+I’m {assistant}, and I’ll remember that your garden is in **${payload.garden_city}, ${payload.garden_country}**, and I’ll speak with you in **${payload.language}**.
+
+How can I help in the garden today?`)
         );
     };
 
@@ -710,7 +692,9 @@ export function CompanionProvider({ children }: { children: ReactNode }) {
             return;
         }
 
-        respondLocal(`✅ Magic link sent to **${clean}**.\n\nOpen your email and tap the link to finish signing in.`);
+        respondLocal(
+            `✅ Magic link sent to **${clean}**.\n\nOpen your email and tap the link to finish signing in.`
+        );
     };
 
     const signOut = async () => {
@@ -762,8 +746,9 @@ export function CompanionProvider({ children }: { children: ReactNode }) {
             t === 'identify plant' ||
             t === 'what plant is this' ||
             t === 'what is this plant'
-        )
+        ) {
             return 'IDENTIFY';
+        }
 
         // DIAGNOSE
         if (
@@ -774,8 +759,9 @@ export function CompanionProvider({ children }: { children: ReactNode }) {
             t === 'what is wrong' ||
             t === "what's wrong with this plant" ||
             t === 'what is wrong with this plant'
-        )
+        ) {
             return 'DIAGNOSE';
+        }
 
         return null;
     };
@@ -826,7 +812,9 @@ export function CompanionProvider({ children }: { children: ReactNode }) {
                         return;
                     }
 
-                    respondLocal('🔒 Sign-in required.\n\nType your **email address** and I’ll send you a **magic link**.');
+                    respondLocal(
+                        '🔒 Sign-in required.\n\nType your **email address** and I’ll send you a **magic link**.'
+                    );
                     return;
                 }
 
@@ -844,7 +832,9 @@ export function CompanionProvider({ children }: { children: ReactNode }) {
                 if (visionIntent) {
                     const image = await getCurrentImage();
                     if (!image) {
-                        respondLocal('I can do that — I just need a plant photo. Turn on the camera or upload an image first.');
+                        respondLocal(
+                            'I can do that — I just need a plant photo. Turn on the camera or upload an image first.'
+                        );
                         return;
                     }
 
@@ -951,7 +941,7 @@ export function CompanionProvider({ children }: { children: ReactNode }) {
                 });
 
                 if (chatRes.status === 429) {
-                    respondLocal('Bramble is taking a short breath (Rate Limit hit). Please try again in 30 seconds.');
+                    respondLocal(say('{assistant} is taking a short breath. Please try again in 30 seconds.'));
                     return;
                 }
 
@@ -1078,7 +1068,9 @@ export function CompanionProvider({ children }: { children: ReactNode }) {
         const confPct = typeof r?.confidence === 'number' ? `${Math.round(r.confidence * 100)}%` : '—';
         const desc = r?.description ? `\n\nWhat I’m seeing: ${r.description}` : '';
         const steps =
-            Array.isArray(r?.treatment) && r.treatment.length ? `\n\nNext steps:\n- ${r.treatment.join('\n- ')}` : '';
+            Array.isArray(r?.treatment) && r.treatment.length
+                ? `\n\nNext steps:\n- ${r.treatment.join('\n- ')}`
+                : '';
 
         respondLocal(`Here’s my read: **${dx}**. Confidence: **${confPct}**.${desc}${steps}`, {
             image,
@@ -1103,8 +1095,9 @@ export function CompanionProvider({ children }: { children: ReactNode }) {
                 return [
                     {
                         role: 'assistant',
-                        content:
-                            '🔒 **Sign-in required**.\n\nType your **email address** and I’ll send you a **magic link** to continue.',
+                        content: say(
+                            '🔒 **Sign-in required for {app}**.\n\nType your **email address** and I’ll send you a **magic link** to continue.'
+                        ),
                     },
                 ];
             });

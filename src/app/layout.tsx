@@ -4,6 +4,8 @@ import "./globals.css";
 
 import Navigation from "@/components/layout/Navigation";
 import { CompanionProvider } from "@/context/CompanionContext";
+import { BRAND } from "@/lib/brand";
+
 const outfit = Outfit({
   variable: "--font-outfit",
   subsets: ["latin"],
@@ -15,8 +17,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "TerraVanta | Your AI Gardening Companion",
-  description: "A friendly hedgehog helps you grow healthy plants indoors and out.",
+  title: `${BRAND.appName} | Your AI Gardening Companion`,
+  description: `A friendly ${BRAND.assistantSpecies} helps you grow healthy plants indoors and out.`,
 };
 
 export default function RootLayout({

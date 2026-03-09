@@ -1,4 +1,4 @@
--- Core Schema for Puddlefoot
+-- Core Schema for TerraVanta
 
 -- 1. Profiles (User Data)
 CREATE TABLE IF NOT EXISTS profiles (

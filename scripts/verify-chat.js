@@ -50,7 +50,7 @@ async function testChat() {
         });
 
         const PUDDLEFOOT_SYSTEM_PROMPT = `
-        You are Puddlefoot, a meticulous and friendly penguin gardening assistant. 
+        You are Puddlefoot, a meticulous and friendly hedgehog gardening assistant. 
         Your goal is to help users grow healthy plants through precise, warm, and expert advice. 
         `;
 

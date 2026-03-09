@@ -5,6 +5,7 @@ import { X, User, Settings, CreditCard, Leaf, Sparkles } from 'lucide-react'; //
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCompanion } from '@/context/CompanionContext';
 import Link from 'next/link';
+import { BRAND } from '@/lib/brand';
 
 export default function HamburgerMenu() {
     const [isOpen, setIsOpen] = useState(false);
@@ -131,7 +132,7 @@ export default function HamburgerMenu() {
                             </div>
 
                             <div className="absolute bottom-8 left-6 right-6 text-center text-xs text-[#8C8174] font-mono">
-                                • TerraVanta v1.2.0 •
+                                • {BRAND.appName} v1.2.0 •
                             </div>
                         </motion.div>
                     </>

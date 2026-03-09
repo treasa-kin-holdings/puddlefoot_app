@@ -1,4 +1,5 @@
-import { supabase } from '@/lib/supabase';
+import { supabase } from './supabase';
+import { BRAND } from './brand';
 
 /**
  * Uploads a plant image to the 'plant-images' bucket.
@@ -9,7 +10,7 @@ export async function uploadPlantImage(file: File): Promise<string> {
     try {
         // 1. Sanitize filename and append timestamp for uniqueness
         const fileExt = file.name.split('.').pop();
-        const fileName = `terravanta-image-${Date.now()}.${fileExt}`;
+        const fileName = `${BRAND.appName.toLowerCase()}-image-${Date.now()}.${fileExt}`;
         const filePath = `${fileName}`; // Can add folders like `uploads/${fileName}` if desired
 
         // 2. Upload to Supabase

@@ -5,6 +5,8 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { useCompanion } from '@/context/CompanionContext';
 import { clsx } from 'clsx';
+import { Camera } from 'lucide-react';
+import { BRAND } from '@/lib/brand';
 import { twMerge } from 'tailwind-merge';
 
 export default function BrambleAvatar() {
@@ -65,8 +67,8 @@ export default function BrambleAvatar() {
             <div className={clsx('relative w-full h-full', isSpeaking && 'animate-pulse-talk')}>
                 <Image
                     src="/bramble.png"
-                    alt="Bramble"
-                    fill
+                    alt={BRAND.assistantName}
+                    draggable={false}
                     sizes="(max-width: 768px) 100vw, 300px"
                     className="object-contain"
                     priority

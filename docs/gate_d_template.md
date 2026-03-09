@@ -1,6 +1,6 @@
 # GATE D — RELEASE & STORE READINESS APPROVAL (Template)
 Approval Authority: Tracy (Human Product Owner)
-Workspace: Puddlefoot
+Workspace: TerraVanta
 Gate: D (Release, Compliance, Safety, Performance)
 
 ## 1. SCOPE OF THIS GATE
@@ -27,6 +27,6 @@ Gate: D (Release, Compliance, Safety, Performance)
 - [ ] Graceful degradation for low connectivity
 
 ### Safety & AI
-- [ ] AI behavior is consistent with Puddlefoot persona
+- [ ] AI behavior is consistent with Bramble persona
 - [ ] Content filters active and effective
 - [ ] No fabrication of critical plant safety data

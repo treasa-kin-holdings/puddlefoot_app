@@ -14,7 +14,7 @@ export default function CompanionLayout() {
     const { isCameraActive } = useCompanion();
 
     return (
-        <div className="fixed inset-0 w-screen h-screen overflow-hidden bg-[#F2ECE7] pointer-events-none z-40">
+        <div className="fixed inset-0 w-screen h-screen overflow-hidden bg-[#F2E8D9] pointer-events-none z-40">
             {/* Camera overlay */}
             <AnimatePresence>{isCameraActive && <CameraView />}</AnimatePresence>
 

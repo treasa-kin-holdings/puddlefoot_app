@@ -1,4 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import { BRAND } from '@/lib/brand';
 import { useCompanion } from '@/context/CompanionContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowDown, Download, Check, Loader2 } from 'lucide-react';
@@ -99,10 +102,10 @@ export default function ChatHistory() {
         <AnimatePresence>
             {isChatting && (
                 <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
+                    initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0 }}
-                    transition={{ delay: 0.6, duration: 0.5 }} // Wait for Puddlefoot
+                    transition={{ delay: 0.6, duration: 0.5 }} // Wait for avatar
                     className="flex flex-col h-full w-[90%] max-w-3xl mx-auto p-4 pointer-events-none relative z-20"
                 >
                     {/* Spacer for top safe zone / header */}
@@ -123,8 +126,10 @@ export default function ChatHistory() {
                                     className="w-full shadow-sm text-base leading-relaxed relative bg-[#FDFBF7] text-[#333333] border border-[#8F9779] font-serif rounded-[15px_25px_15px_20px] texture-grain mt-8"
                                     style={{ padding: '10px 16px' }}
                                 >
-                                    <p className="font-heading text-xl text-oxblood-plum mb-2">Hi! I'm Puddlefoot.</p>
-                                    <p className="font-sans text-base text-slate-blue-grey">How can I help you grow?</p>
+                                    <div className="space-y-2">
+                                        <p className="font-heading text-xl text-oxblood-plum mb-2">Hi! I'm {BRAND.assistantName}.</p>
+                                        <p className="font-sans text-base text-slate-blue-grey">How can I help you grow?</p>
+                                    </div>
                                 </div>
                             </motion.div>
                         )}

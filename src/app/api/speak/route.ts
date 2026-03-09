@@ -1,5 +1,7 @@
+
 import { NextResponse } from 'next/server';
 import { checkChatLimit, logUsage } from '@/lib/limits';
+import { BRAND } from '@/lib/brand';
 
 const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY;
 const VOICE_ID = process.env.ELEVENLABS_VOICE_ID || 'L820P36PyM0qW6c1AqiR';
@@ -25,7 +27,7 @@ export async function POST(request: Request) {
         const allowed = await checkChatLimit(userId);
         if (!allowed) {
             return NextResponse.json(
-                { error: 'Daily limit reached. Upgrade to Premium for more Bramble interactions.' },
+                { error: `Daily limit reached.Upgrade to Premium for more ${BRAND.assistantName} interactions.` },
                 { status: 403 }
             );
         }

@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { useCompanion } from '@/context/CompanionContext';
+import { useRouter } from 'next/navigation';
+import { BRAND } from '@/lib/brand';
 import SignInScreen from '@/components/companion/SignInScreen';
 import CompanionLayout from '@/components/companion/CompanionLayout';
 
@@ -17,7 +19,7 @@ export default function AppGate() {
                     <div className="w-full max-w-md mx-auto">
                         <div className="bg-[#F7F5F0] border border-[#8B9276] rounded-[15px_25px_15px_20px] texture-grain overflow-hidden p-7">
                             <div className="text-neutral-800 leading-relaxed font-serif">
-                                Hi! I’m Bramble.
+                                Hi! I’m {BRAND.assistantName}.
                                 <br />
                                 One sec — checking your sign-in…
                             </div>

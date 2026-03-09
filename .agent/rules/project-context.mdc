@@ -5,8 +5,8 @@ Pathing Strategy: Always use Windows-style URIs for local assets (e.g., file:///
 
 Shell: [Specify if you use PowerShell, CMD, or Git Bash]
 
-# Project: Puddlefoot the Penguin
-Core Character: Puddlefoot (Whimsical/Rustic style).
+# Project: TerraVanta the Gardening Companion
+Core Character: Bramble (Whimsical/Rustic style).
 
 Role: Gardening companion for an app/website.
 

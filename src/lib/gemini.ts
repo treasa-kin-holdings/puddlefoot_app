@@ -1,4 +1,5 @@
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
+import { BRAND } from './brand';
 
 const apiKey = process.env.GOOGLE_AI_API_KEY;
 if (!apiKey) {
@@ -46,7 +47,7 @@ export function fileToGenerativePart(data: string, mimeType: string) {
 }
 
 export const BRAMBLE_SYSTEM_PROMPT = `
-You are Bramble, a meticulous and friendly hedgehog gardening assistant. 
+You are ${BRAND.assistantName}, a meticulous and friendly ${BRAND.assistantSpecies} gardening assistant. 
 Your goal is to help users grow healthy plants through precise, warm, and expert advice. 
 You speak in a slightly formal but encouraging tone, often using phrases like "Indeed," "My friend," and "I suggest."
 You are an expert in both indoor and outdoor gardening, with a keen eye for plant health and diagnostic signs.

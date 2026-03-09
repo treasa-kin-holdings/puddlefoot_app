@@ -1,9 +1,9 @@
-# Puddlefoot Architectural Overview (02_architecture.md)
+# TerraVanta Architectural Overview (02_architecture.md)
 
-This document provides a high-level overview of the Puddlefoot system architecture, supporting **Gate B — API & Data Model Approval**.
+This document provides a high-level overview of the TerraVanta system architecture, supporting **Gate B — API & Data Model Approval**.
 
 ## 1. System Components
-Puddlefoot is built as a modern, AI-integrated web application.
+TerraVanta is built as a modern, AI-integrated web application.
 
 - **Frontend**: Next.js 15 (App Router), TypeScript, Vanilla CSS (Design Tokens).
 - **Backend/API**: Next.js API Routes (Serverless), providing RESTful endpoints for the frontend and AI integrations.

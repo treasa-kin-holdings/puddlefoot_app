@@ -119,7 +119,7 @@ export default function HamburgerMenu() {
                             </div>
 
                             <div className="absolute bottom-8 left-6 right-6 text-center text-xs text-[#8C8174] font-mono">
-                                • Puddlefoot v1.2.0 •
+                                • TerraVanta v1.0.0 •
                             </div>
                         </motion.div>
                     </>
