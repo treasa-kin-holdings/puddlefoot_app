@@ -1,83 +1,48 @@
 'use client';
 
-import React, { ReactNode } from 'react';
-import { CompanionProvider, useCompanion } from '@/context/CompanionContext';
+import React from 'react';
+import { useCompanion } from '@/context/CompanionContext';
+import { AnimatePresence } from 'framer-motion';
+
 import PuddlefootAvatar from './PuddlefootAvatar';
-import HUDControlBar from './HUDControlBar';
 import ChatHistory from './ChatHistory';
-import HamburgerMenu from './HamburgerMenu';
-import ChatInputOverlay from './ChatInputOverlay';
+import ChatInterface from './ChatInterface';
+import ControlBar from './HUDControlBar';
 import CameraView from './CameraView';
 
-// Safe zone margin style
-const SAFE_ZONE_STYLE = {
-    paddingTop: '15dvh', // Using dvh for dynamic viewport height
-    paddingBottom: '15dvh',
-    paddingLeft: '15vw',
-    paddingRight: '15vw',
-};
-
-// Inner component to access context
-function CompanionLayoutInner({ children }: { children: ReactNode }) {
-    const { uiMode, isCameraActive } = useCompanion();
+export default function CompanionLayout() {
+    const { isCameraActive } = useCompanion();
 
     return (
-        <div className="fixed inset-0 w-screen h-screen overflow-hidden bg-[#F2ECE7]">
-            {/* Camera View - Direct Child of Root */}
-            {isCameraActive && <CameraView />}
+        <div className="fixed inset-0 w-screen h-screen overflow-hidden bg-[#F2ECE7] pointer-events-none z-40">
+            {/* Camera overlay */}
+            <AnimatePresence>{isCameraActive && <CameraView />}</AnimatePresence>
 
-            {/* Background / Main Content Area */}
-            {/* This layer sits at the very back */}
-            <main className="absolute inset-0 z-0 overflow-y-auto">
-                {children}
-            </main>
+            {/* Background / scrollable content area (if you use it) */}
+            <main className="absolute inset-0 z-0 overflow-y-auto">{/* Background content area */}</main>
 
-            {/* HUD / Interactive Layer Container - Strict Fixed Positioning */}
-
-            {/* Top Section: Hamburger - Fixed Opposite Puddlefoot (Top 8%) */}
-            <div className="fixed left-8 z-[60] pointer-events-auto" style={{ top: '8%' }}>
-                <HamburgerMenu />
-            </div>
-
-            {/* Puddlefoot Avatar Layer - Fixed z-40 */}
-            {/* The avatar component handles its own fixed positioning */}
+            {/* Avatar layer (should manage its own pointer-events if needed) */}
             <PuddlefootAvatar />
 
-            {/* Chat History - z-20 (Behind Puddlefoot) */}
+            {/* Chat History - behind avatar */}
             <div className="fixed inset-0 z-20 pointer-events-none flex justify-center">
                 <ChatHistory />
             </div>
 
-            {/* Bottom Section: Control Bar - Fixed bottom-10 centered z-50 */}
-            <div
-                className="pointer-events-none"
-                style={{
-                    position: 'fixed',
-                    bottom: '40px',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    width: '90%',
-                    maxWidth: '28rem', // max-w-md
-                    zIndex: 50
-                }}
-            >
-                <div className="pointer-events-auto w-full">
-                    <HUDControlBar />
+            {/* HUD RAIL pinned to viewport bottom */}
+            {/* IMPORTANT:
+          - pointer-events-none on the rail so it doesn't block the screen
+          - ControlBar must use pointer-events-auto on its actual clickable clusters/buttons
+          - the relative "track" gives ControlBar a stable box for absolute left/right positioning
+      */}
+            <div className="fixed inset-x-0 bottom-0 z-50 pointer-events-none pb-[env(safe-area-inset-bottom)]">
+                <div className="relative h-[96px]">
+                    <ControlBar />
                 </div>
             </div>
 
-            {/* Chat Input Overlay - Fixed to viewport (z-60) - Moved out of HUD container to avoid transform issues */}
-            <ChatInputOverlay />
-
-            {/* Overlay for "Scanning" or other modes if needed */}
+            {/* Chat Interface overlay (keyboard/input UI) */}
+            <ChatInterface />
         </div>
-    );
-}
-
-export default function CompanionLayout({ children }: { children: ReactNode }) {
-    return (
-        <CompanionProvider>
-            <CompanionLayoutInner>{children}</CompanionLayoutInner>
-        </CompanionProvider>
     );
 }

@@ -1,10 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { X, User, Settings, CreditCard, Leaf, Sparkles } from 'lucide-react'; // Removing standard Menu icon
+import { X, User, Settings, CreditCard } from 'lucide-react'; // Removing standard Menu icon
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCompanion } from '@/context/CompanionContext';
-import Link from 'next/link';
 
 export default function HamburgerMenu() {
     const [isOpen, setIsOpen] = useState(false);
@@ -19,7 +18,6 @@ export default function HamburgerMenu() {
                 stroke="#F5F5DC" // Old Paper (Cream)
                 strokeWidth="2"
                 strokeLinecap="round"
-                initial={false}
                 animate={isOpen ? { d: "M 5,5 L 19,19" } : { d: "M 5,7 C 7,6 17,6 19,7" }}
             />
             {/* Middle Twig */}
@@ -28,7 +26,6 @@ export default function HamburgerMenu() {
                 stroke="#F5F5DC"
                 strokeWidth="2"
                 strokeLinecap="round"
-                initial={false}
                 animate={isOpen ? { opacity: 0 } : { opacity: 1 }}
             />
             {/* Bottom Twig */}
@@ -37,7 +34,6 @@ export default function HamburgerMenu() {
                 stroke="#F5F5DC"
                 strokeWidth="2"
                 strokeLinecap="round"
-                initial={false}
                 animate={isOpen ? { d: "M 5,19 L 19,5" } : { d: "M 5,17 C 8,18 16,18 19,17" }}
             />
         </svg>
@@ -47,7 +43,7 @@ export default function HamburgerMenu() {
         <>
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="p-3 backdrop-blur-sm transition-transform hover:scale-105 pointer-events-auto flex items-center justify-center cursor-pointer opacity-100 z-[999] relative shrink-0"
+                className="p-3 backdrop-blur-sm transition-transform hover:scale-105 pointer-events-auto relative z-[60] flex items-center justify-center"
                 style={{
                     backgroundColor: 'var(--forest-green)', // #22543D
                     borderRadius: '40% 60% 50% 50% / 60% 40% 60% 40%', // Unified Shape
@@ -69,7 +65,7 @@ export default function HamburgerMenu() {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={() => setIsOpen(false)}
-                            className="fixed inset-0 bg-black/40 z-40 backdrop-blur-sm pointer-events-auto"
+                            className="fixed inset-0 bg-black/40 z-40 backdrop-blur-sm"
                         />
 
                         {/* Parchment Drawer */}
@@ -78,7 +74,7 @@ export default function HamburgerMenu() {
                             animate={{ x: 0, rotateY: 0 }}
                             exit={{ x: '-100%', rotateY: 45 }}
                             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                            className="fixed top-0 left-0 bottom-0 w-3/4 max-w-xs z-50 shadow-2xl p-6 texture-grain pointer-events-auto"
+                            className="fixed top-0 left-0 bottom-0 w-3/4 max-w-xs z-50 shadow-2xl p-6 texture-grain"
                             style={{
                                 backgroundColor: 'var(--old-paper)',
                                 borderRight: '2px solid var(--forest-green)',
@@ -107,14 +103,6 @@ export default function HamburgerMenu() {
                                 </div>
 
                                 <nav className="space-y-3">
-                                    <Link href="/plants" onClick={() => setIsOpen(false)} className="w-full flex items-center gap-4 p-3 hover:bg-[#D3C3AB]/20 rounded-lg transition-colors text-left text-[#3E2723] font-medium">
-                                        <Leaf size={22} color="var(--forest-green)" />
-                                        <span>My Plants</span>
-                                    </Link>
-                                    <Link href="/assistant" onClick={() => setIsOpen(false)} className="w-full flex items-center gap-4 p-3 hover:bg-[#D3C3AB]/20 rounded-lg transition-colors text-left text-[#3E2723] font-medium">
-                                        <Sparkles size={22} color="var(--forest-green)" />
-                                        <span>Assistant</span>
-                                    </Link>
                                     <button className="w-full flex items-center gap-4 p-3 hover:bg-[#D3C3AB]/20 rounded-lg transition-colors text-left text-[#3E2723] font-medium">
                                         <User size={22} color="var(--forest-green)" />
                                         <span>My Profile</span>

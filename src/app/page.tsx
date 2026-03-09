@@ -1,9 +1,5 @@
-import CompanionLayout from "@/components/companion/CompanionLayout";
+import AppGate from '@/components/companion/AppGate';
 
-export default function Home() {
-  return (
-    <CompanionLayout>
-      <div />
-    </CompanionLayout>
-  );
+export default function Page() {
+  return <AppGate />;
 }

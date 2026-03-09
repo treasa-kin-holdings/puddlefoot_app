@@ -1,14 +1,53 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useCompanion } from '@/context/CompanionContext';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowDown } from 'lucide-react';
+import { ArrowDown, Download, Check, Loader2 } from 'lucide-react';
+import { saveGardenMedia, base64ToBlob } from '@/lib/gardenMedia';
 
 export default function ChatHistory() {
-    const { messages, isLoading, uiMode } = useCompanion();
+    const { messages, isLoading, uiMode, tier, userId, requestUpgrade } = useCompanion();
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const scrollRef = useRef<HTMLDivElement>(null);
     const [showScrollButton, setShowScrollButton] = useState(false);
     const isChatting = uiMode === 'CHATTING';
+
+    const [savingIndexes, setSavingIndexes] = useState<Record<number, 'saving' | 'saved'>>({});
+
+    const handleSaveImage = async (index: number, m: any) => {
+        if (tier !== 'premium') {
+            requestUpgrade("save_garden_media");
+            return;
+        }
+        if (!userId || !m.image) return;
+
+        setSavingIndexes(prev => ({ ...prev, [index]: 'saving' }));
+        try {
+            const { blob, mime } = base64ToBlob(m.image);
+            await saveGardenMedia({
+                userId,
+                blob,
+                mimeType: mime,
+                kind: m.imageKind ?? 'photo',
+                title: m.imageTitle ?? 'Chat Image',
+                metadata: m.imageMetadata,
+            });
+            setSavingIndexes(prev => ({ ...prev, [index]: 'saved' }));
+            setTimeout(() => {
+                setSavingIndexes(prev => {
+                    const next = { ...prev };
+                    delete next[index];
+                    return next;
+                });
+            }, 3000);
+        } catch (err: any) {
+            console.error(err);
+            setSavingIndexes(prev => {
+                const next = { ...prev };
+                delete next[index];
+                return next;
+            });
+        }
+    };
 
     // Check if user is near bottom
     const isNearBottom = () => {
@@ -75,10 +114,19 @@ export default function ChatHistory() {
                         className="w-full space-y-6 px-4 pointer-events-auto h-[calc(100vh-160px)] overflow-y-auto"
                     >
                         {messages.length === 0 && (
-                            <div className="text-center text-gray-500 mt-20 opacity-80 bg-white/40 backdrop-blur-sm p-6 rounded-3xl mx-auto max-w-sm border border-white/50">
-                                <p className="font-heading text-xl text-oxblood-plum mb-2">Hi! I'm Puddlefoot.</p>
-                                <p className="text-base text-slate-blue-grey">Ask me anything about your garden!</p>
-                            </div>
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="flex justify-start"
+                            >
+                                <div
+                                    className="w-full shadow-sm text-base leading-relaxed relative bg-[#FDFBF7] text-[#333333] border border-[#8F9779] font-serif rounded-[15px_25px_15px_20px] texture-grain mt-8"
+                                    style={{ padding: '10px 16px' }}
+                                >
+                                    <p className="font-heading text-xl text-oxblood-plum mb-2">Hi! I'm Puddlefoot.</p>
+                                    <p className="font-sans text-base text-slate-blue-grey">How can I help you grow?</p>
+                                </div>
+                            </motion.div>
                         )}
 
                         {messages.map((m, i) => (
@@ -95,7 +143,35 @@ export default function ChatHistory() {
                                         }`}
                                     style={{ padding: '10px 16px' }}
                                 >
-                                    {m.content}
+                                    {m.image && (
+                                        <div className="mb-3 relative max-w-[240px] rounded-lg overflow-hidden border border-[#8F9779]/20 shadow-sm w-fit">
+                                            <img
+                                                src={m.image}
+                                                alt="Attached"
+                                                className="w-full object-cover block"
+                                            />
+                                            <button
+                                                onClick={() => handleSaveImage(i, m)}
+                                                disabled={savingIndexes[i] === 'saving' || savingIndexes[i] === 'saved'}
+                                                className="absolute bottom-2 right-2 p-2 rounded-full shadow-md border border-gray-200 z-[100] transition-colors bg-white text-[#8F9779] hover:bg-gray-100 disabled:opacity-80 flex items-center justify-center"
+                                                style={{
+                                                    backgroundColor: savingIndexes[i] === 'saved' ? '#22c55e' : 'white',
+                                                    color: savingIndexes[i] === 'saved' ? 'white' : '#8F9779',
+                                                    borderColor: savingIndexes[i] === 'saved' ? '#16a34a' : 'rgba(255,255,255,0.4)',
+                                                }}
+                                                aria-label="Save to Gallery"
+                                            >
+                                                {savingIndexes[i] === 'saved' ? (
+                                                    <Check size={18} />
+                                                ) : savingIndexes[i] === 'saving' ? (
+                                                    <Loader2 size={18} className="animate-spin" />
+                                                ) : (
+                                                    <Download size={18} className="stroke-[2.5]" />
+                                                )}
+                                            </button>
+                                        </div>
+                                    )}
+                                    <div className="whitespace-pre-wrap">{m.content}</div>
                                 </div>
                             </motion.div>
                         ))}

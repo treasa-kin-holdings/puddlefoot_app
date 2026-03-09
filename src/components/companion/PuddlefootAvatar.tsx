@@ -1,23 +1,33 @@
 'use client';
 
-import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { useCompanion } from '@/context/CompanionContext';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 export default function PuddlefootAvatar() {
-    const { uiMode, isKeyboardOpen, isProcessing, isCameraActive } = useCompanion();
+    const { interactionMode, isKeyboardOpen, isProcessing, isCameraActive, uiMode, selectedImage } = useCompanion();
 
-    // Determine if we should be in "Mini" mode (Top-Right)
-    const isMini = uiMode === 'CHATTING' || isCameraActive || isKeyboardOpen;
-    const isSpeaking = uiMode === 'SPEAKING' || isProcessing;
+    // Prevent hydration mismatches if any of these values depend on browser-only state
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => setMounted(true), []);
+
+    const safeInteractionMode = mounted ? interactionMode : 'SPEAK';
+    const safeKeyboardOpen = mounted ? isKeyboardOpen : false;
+    const safeCameraActive = mounted ? isCameraActive : false;
+    const safeSelectedImage = mounted ? selectedImage : null;
+    const safeUiMode = mounted ? uiMode : 'IDLE';
+
+    // Mini mode whenever in CHAT, or camera is active, or an image is selected
+    const isMini = safeInteractionMode === 'CHAT' || safeCameraActive || safeSelectedImage !== null;
+    const isSpeaking = safeUiMode === 'SPEAKING' || isProcessing;
 
     return (
         <motion.div
             className={twMerge(
-                'z-40 pointer-events-none fixed', // Fixed positioning to escape flow
+                'z-40 pointer-events-none fixed',
                 isMini ? 'border-2 border-white/50 rounded-full overflow-hidden bg-black/20 backdrop-blur-sm shadow-lg' : ''
             )}
             initial={false}
@@ -26,30 +36,33 @@ export default function PuddlefootAvatar() {
                 IDLE: {
                     top: '50%',
                     left: '50%',
+                    right: 'auto',
+                    bottom: 'auto',
                     x: '-50%',
                     y: '-50%',
                     scale: 1,
                     position: 'fixed',
                     width: '300px',
-                    height: '300px'
+                    height: '300px',
                 },
                 ACTIVE: {
-                    top: '8%',   // Approx top-8 region
-                    left: '85%', // Approx right-8 region
-                    x: '-50%',   // Keep centered on anchor
-                    y: '-50%',   // Keep centered on anchor
-                    scale: 0.25, // Shrink to ~75px
+                    top: 16,
+                    right: 16,
+                    left: 'auto',
+                    bottom: 'auto',
+                    x: 112.5,
+                    y: -112.5,
+                    scale: 0.25,
                     position: 'fixed',
-                    width: '300px', // Maintain base size for scaling
-                    height: '300px'
-                }
-            }}
-            transition={{
+                    width: '300px',
+                    height: '300px',
+                },
+            }} transition={{
                 duration: 0.6,
-                ease: [0.34, 1.56, 0.64, 1] // Bouncy/Whimsical
+                ease: [0.34, 1.56, 0.64, 1]
             }}
         >
-            <div className={clsx("relative w-full h-full", isSpeaking && "animate-pulse-talk")}>
+            <div className={clsx('relative w-full h-full', isSpeaking && 'animate-pulse-talk')}>
                 <Image
                     src="/puddlefoot.png"
                     alt="Puddlefoot"
@@ -60,7 +73,6 @@ export default function PuddlefootAvatar() {
                 />
             </div>
 
-            {/* Pulse Ring for Speaking */}
             {isSpeaking && !isMini && (
                 <motion.div
                     className="absolute inset-0 rounded-full border-4 border-nature-green/50"
