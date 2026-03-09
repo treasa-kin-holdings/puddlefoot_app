@@ -4,7 +4,7 @@ import React from 'react';
 import { useCompanion } from '@/context/CompanionContext';
 import { AnimatePresence } from 'framer-motion';
 
-import PuddlefootAvatar from './PuddlefootAvatar';
+import BrambleAvatar from './BrambleAvatar';
 import ChatHistory from './ChatHistory';
 import ChatInterface from './ChatInterface';
 import ControlBar from './HUDControlBar';
@@ -22,7 +22,7 @@ export default function CompanionLayout() {
             <main className="absolute inset-0 z-0 overflow-y-auto">{/* Background content area */}</main>
 
             {/* Avatar layer (should manage its own pointer-events if needed) */}
-            <PuddlefootAvatar />
+            <BrambleAvatar />
 
             {/* Chat History - behind avatar */}
             <div className="fixed inset-0 z-20 pointer-events-none flex justify-center">

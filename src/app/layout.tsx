@@ -15,8 +15,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Puddlefoot | Your AI Gardening Companion",
-  description: "A friendly penguin helps you grow healthy plants indoors and out.",
+  title: "TerraVanta | Your AI Gardening Companion",
+  description: "A friendly hedgehog helps you grow healthy plants indoors and out.",
 };
 
 export default function RootLayout({

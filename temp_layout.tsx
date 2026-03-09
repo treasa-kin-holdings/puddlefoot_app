@@ -2,11 +2,11 @@
 
 import React, { ReactNode } from 'react';
 import { CompanionProvider, useCompanion } from '@/context/CompanionContext';
-import PuddlefootAvatar from './PuddlefootAvatar';
-import HUDControlBar from './HUDControlBar';
-import ChatHistory from './ChatHistory';
-import HamburgerMenu from './HamburgerMenu';
-import ChatInputOverlay from './ChatInputOverlay';
+import BrambleAvatar from './src/components/companion/BrambleAvatar';
+import HUDControlBar from './src/components/companion/HUDControlBar';
+import ChatHistory from './src/components/companion/ChatHistory';
+import HamburgerMenu from './src/components/companion/HamburgerMenu';
+import ChatInputOverlay from './src/components/companion/ChatInputOverlay';
 
 // Safe zone margin style
 const SAFE_ZONE_STYLE = {
@@ -37,7 +37,7 @@ function CompanionLayoutInner({ children }: { children: ReactNode }) {
 
             {/* Puddlefoot Avatar Layer - Fixed z-40 */}
             {/* The avatar component handles its own fixed positioning */}
-            <PuddlefootAvatar />
+            <BrambleAvatar />
 
             {/* Chat History - z-20 (Behind Puddlefoot) */}
             <div className="fixed inset-0 z-20 pointer-events-none flex justify-center">

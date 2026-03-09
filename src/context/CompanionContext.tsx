@@ -512,7 +512,7 @@ export function CompanionProvider({ children }: { children: ReactNode }) {
         setOnboardingStatus('incomplete');
 
         respondLocal(
-            "👋 Hello! I’m Puddlefoot.\n\nBefore we start, I just need a few details so I can personalize your gardening help.\n\nWhat would you like me to call you?"
+            "👋 Hello! I’m Bramble.\n\nBefore we start, I just need a few details so I can personalize your gardening help.\n\nWhat would you like me to call you?"
         );
     };
 
@@ -951,7 +951,7 @@ export function CompanionProvider({ children }: { children: ReactNode }) {
                 });
 
                 if (chatRes.status === 429) {
-                    respondLocal('Puddlefoot is taking a short breath (Rate Limit hit). Please try again in 30 seconds.');
+                    respondLocal('Bramble is taking a short breath (Rate Limit hit). Please try again in 30 seconds.');
                     return;
                 }
 

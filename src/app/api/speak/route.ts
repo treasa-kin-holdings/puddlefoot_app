@@ -25,7 +25,7 @@ export async function POST(request: Request) {
         const allowed = await checkChatLimit(userId);
         if (!allowed) {
             return NextResponse.json(
-                { error: 'Daily limit reached. Upgrade to Bloom for more Puddlefoot interactions.' },
+                { error: 'Daily limit reached. Upgrade to Premium for more Bramble interactions.' },
                 { status: 403 }
             );
         }

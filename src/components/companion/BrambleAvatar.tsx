@@ -7,7 +7,7 @@ import { useCompanion } from '@/context/CompanionContext';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-export default function PuddlefootAvatar() {
+export default function BrambleAvatar() {
     const { interactionMode, isKeyboardOpen, isProcessing, isCameraActive, uiMode, selectedImage } = useCompanion();
 
     // Prevent hydration mismatches if any of these values depend on browser-only state
@@ -64,8 +64,8 @@ export default function PuddlefootAvatar() {
         >
             <div className={clsx('relative w-full h-full', isSpeaking && 'animate-pulse-talk')}>
                 <Image
-                    src="/puddlefoot.png"
-                    alt="Puddlefoot"
+                    src="/bramble.png"
+                    alt="Bramble"
                     fill
                     sizes="(max-width: 768px) 100vw, 300px"
                     className="object-contain"

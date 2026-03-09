@@ -45,7 +45,7 @@ export async function POST(request: Request) {
             console.log('Chat API: guest/test user, skipping limits:', userId);
         }
 
-        const { getGeminiModel, PUDDLEFOOT_SYSTEM_PROMPT } = await import('@/lib/gemini');
+        const { getGeminiModel, BRAMBLE_SYSTEM_PROMPT } = await import('@/lib/gemini');
 
         // IMPORTANT: use a stable model id
         const model = getGeminiModel('gemini-2.5-flash-lite');
@@ -59,8 +59,8 @@ export async function POST(request: Request) {
 
         const chat = model.startChat({
             history: [
-                { role: 'user', parts: [{ text: `System Instruction: ${PUDDLEFOOT_SYSTEM_PROMPT}` }] },
-                { role: 'model', parts: [{ text: 'Understood. I am Puddlefoot, ready to assist.' }] },
+                { role: 'user', parts: [{ text: `System Instruction: ${BRAMBLE_SYSTEM_PROMPT}` }] },
+                { role: 'model', parts: [{ text: 'Understood. I am Bramble, ready to assist.' }] },
                 ...chatHistory,
             ],
             generationConfig: { maxOutputTokens: 2000 },
@@ -91,7 +91,7 @@ export async function POST(request: Request) {
         // Rate limit detection
         if (error?.message?.includes('429') || error?.status === 429) {
             return NextResponse.json(
-                { error: 'Puddlefoot is tired (Rate Limit Reached). Please wait a minute and try again.' },
+                { error: 'Bramble is tired (Rate Limit Reached). Please wait a minute and try again.' },
                 { status: 429 }
             );
         }

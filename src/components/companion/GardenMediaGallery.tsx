@@ -71,7 +71,7 @@ export default function GardenMediaGallery() {
 
             {items.length === 0 && !loading ? (
                 <div className="text-sm opacity-70">
-                    Nothing saved yet. When Puddlefoot generates an overlay/prediction, tap <b>Save to Gallery</b>.
+                    Nothing saved yet. When Bramble generates an overlay/prediction, tap <b>Save to Gallery</b>.
                 </div>
             ) : (
                 <div className="grid grid-cols-3 gap-2">

@@ -57,7 +57,7 @@ export default function SignInScreen() {
                             style={{ padding: '10px 16px' }}
                         >
                             <div className="text-neutral-800 leading-relaxed font-serif">
-                                Hi! I’m Puddlefoot.
+                                Hi! I’m Bramble.
                                 <br />
                                 One sec — checking your sign-in…
                             </div>

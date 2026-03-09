@@ -21,8 +21,8 @@
     /* Semantic Mappings */
     --nature-green: var(--sage-grey);
     --nature-green-light: var(--cream-light);
-    --penguin-blue: var(--slate-blue-grey);
-    --penguin-white: var(--linen-offwhite);
+    --bramble-blue: var(--slate-blue-grey);
+    --bramble-white: var(--linen-offwhite);
     --accent-orange: var(--warm-stone);
     --accent-blue: var(--mist-blue-grey);
     --forest-green: #22543D;
@@ -102,7 +102,7 @@
   }
 
   /* Character Animation Container */
-  .penguin-float {
+  .bramble-float {
     animation: float 6s ease-in-out infinite;
   }
 
